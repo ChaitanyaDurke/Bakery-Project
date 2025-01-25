@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Portal</title>
+    <link rel="stylesheet" href="" />
+
+    <link rel="stylesheet" href="Webpage.css" />
+   
+    <link rel="preconnect" href="https://fonts.gstactic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+      
+        display: flex;
+        font-family: sans-serif;
+        min-height: 100vh;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        background-image: linear-gradient(
+            rgba(4, 9, 30, 0.7),
+            rgba(4, 9, 30, 0.7)
+          ),
+          url(bakeimg8.webp);
+        background-position: center;
+        background-size: cover;
+        position: relative;
+      }
+
+      .container {
+        display: flex;
+        width: 400px;
+        background-color: #fff;
+        border-radius: 10px;
+      }
+      .container:hover {
+        box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+      }
+      
+
+      .login-form, .forgot-password-form, .signup-form {
+        padding: 40px;
+        flex: 1;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .input-field {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .forgot-password {
+        display: block;
+        text-align: right;
+        margin-top: 10px;
+        color: #aaa;
+        cursor: pointer;
+      }
+
+
+      .signup {
+        display: block;
+        text-align: right;
+        margin-top: 10px;
+        color: #aaa;
+        cursor: pointer;
+      }
+
+      .illustration {
+        flex: 1;
+        text-align: center;
+      }
+
+      .illustration img {
+        width: 100%;
+        background-position: center;
+        border-radius: 10px;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      .fas.fa-eye {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #ccc;
+      }
+    </style>
+    <script src="otpVerifier.js "></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+  </head>
+  <body>
+
+
+
+   
+
+
+
+    <div class="container">
+      <div class="login-form">
+        <h1>Welcome </h1>
+        <form id="loginForm" action="login.php" method="post">
+          <div class="input-field">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" required  />
+          </div>
+          <div class="input-field">
+            <label for="email">Password</label>
+            <input type="password" id="password" name="pass" required />
+            <span id="emailWarning" style="color: red;"></span>
+            <i class="fas fa-eye" id="togglePassword"></i>
+        </div>
+        
+          <button type="submit" >Login</button> <button type="button" onclick="showSignup()">Sign In</button> 
+          <!-- <a href="#" class="forgot-password" onclick="showForgotPassword()">Forgot Password?</a> -->
+          <!-- <button type="submit" ><a href="#" class="signup" onclick="showSignup()">Sign Up</a></button> -->
+        </form>
+      </div>
+      <div class="illustration">
+        <img src="IMG/cheff_logo.webp" />
+      </div>
+    </div>
+
+    <div class="container" style="display: none;" id="signupContainer">
+      <div class="signup-form">
+        <h1>Sign Up</h1>
+        <form id="signupForm" action="Registration_1.php" method="post" >
+          <div class="input-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="signupName" required />
+          </div>
+          <div class="input-field">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="signupEmail" required oninput="validateEmail()" />
+            <span id="emailWarning" style="color: red;"></span>
+        </div>
+        
+          <div class="input-field">
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="signupPhone" required />
+          </div>
+          <div class="input-field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="signupPassword" required />
+          </div>
+
+          <div class="input-field">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="signupAddress" required />
+          </div>
+
+          <button type="submit">Sign Up</button><button type="button" onclick="redirectTo('log.html')">Login</button>
+        </form>
+      </div>
+      <div class="illustration">
+        <img src="IMG/signup_image.jpg" />
+      </div>
+    </div>
+
+    <script>
+   
+
+      function showSignup() {
+        document.getElementById("signupContainer").style.display = "flex";
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("forgotPasswordContainer").style.display = "none";
+      }
+
+      function redirectTo(web) {
+    window.location.href = web;
+  }
+
+  function validateEmail() {
+    var email = document.getElementById("email").value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "check_email.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById("emailWarning").innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send("email=" + email);
+}
+
+
+    </script>
+  </body>
+</html>
